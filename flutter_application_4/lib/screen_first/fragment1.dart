@@ -7,11 +7,11 @@ class Fragment1 extends StatefulWidget {
 }
 
 class _Fragment1State extends State<Fragment1> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
+  List<String> items = ['Server 1', 'Server 2', 'Server 3'];
 
   void addItem() {
     setState(() {
-      items.add('Item ${items.length + 1}');
+      items.add('Server ${items.length + 1}');
     });
   }
 
