@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'fragment2.dart';
+import 'fragment1.dart';
 
-class Fragment1 extends StatefulWidget {
+class Fragment5Custom extends StatefulWidget {
   @override
-  _Fragment1State createState() => _Fragment1State();
+  _Fragment5CustomState createState() => _Fragment5CustomState();
 }
 
-class _Fragment1State extends State<Fragment1> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
+class _Fragment5CustomState extends State<Fragment5Custom> {
+  List<String> items = ['Custom 1', 'Custom 2', 'Custom 3'];
 
   void addItem() {
     setState(() {
-      items.add('Item ${items.length + 1}');
+      items.add('Custom Item ${items.length + 1}');
     });
   }
 
@@ -24,45 +24,45 @@ class _Fragment1State extends State<Fragment1> {
   void navigateNext() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Fragment2()),
+      MaterialPageRoute(builder: (context) => Fragment1()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('SingleChildScrollView + Column')),
-      body: SingleChildScrollView(
-        child: Column(
-          children: items.asMap().entries.map((entry) {
-            int idx = entry.key;
-            String val = entry.value;
+      appBar: AppBar(title: Text('ListView.custom')),
+      body: ListView.custom(
+        childrenDelegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final val = items[index];
             return ListTile(
               key: ValueKey(val),
               title: Text(val),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () => removeItem(idx),
+                onPressed: () => removeItem(index),
               ),
             );
-          }).toList(),
+          },
+          childCount: items.length,
         ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            heroTag: 'add1',
+            heroTag: 'add_custom',
             onPressed: addItem,
             child: Icon(Icons.add),
             tooltip: 'Add item',
           ),
           SizedBox(width: 16),
           FloatingActionButton.extended(
-            label: Text('ListView.builder'),
-            icon: Icon(Icons.arrow_forward),
+            heroTag: 'next_custom',
+            label: Text('SingleChildScrollView'),
+            icon: Icon(Icons.swap_vert),
             onPressed: navigateNext,
-            heroTag: 'nav1',
           ),
         ],
       ),

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'fragment4_builder.dart';
+import 'fragment5_custom.dart';
 
-class Fragment3 extends StatefulWidget {
+class Fragment4Builder extends StatefulWidget {
   @override
-  _Fragment3State createState() => _Fragment3State();
+  _Fragment4BuilderState createState() => _Fragment4BuilderState();
 }
 
-class _Fragment3State extends State<Fragment3> {
-  List<String> items = ['Item X', 'Item Y', 'Item Z'];
+class _Fragment4BuilderState extends State<Fragment4Builder> {
+  List<String> items = ['Builder 1', 'Builder 2', 'Builder 3'];
 
   void addItem() {
     setState(() {
-      items.add('Item ${items.length + 1}');
+      items.add('Builder Item ${items.length + 1}');
     });
   }
 
@@ -24,15 +24,15 @@ class _Fragment3State extends State<Fragment3> {
   void navigateNext() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Fragment4Builder()),
+      MaterialPageRoute(builder: (context) => Fragment5Custom()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('ListView.separated')),
-      body: ListView.separated(
+      appBar: AppBar(title: Text('ListView.builder')),
+      body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
           final val = items[index];
@@ -45,23 +45,22 @@ class _Fragment3State extends State<Fragment3> {
             ),
           );
         },
-        separatorBuilder: (context, index) => Divider(),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            heroTag: 'add3',
+            heroTag: 'add_builder',
             onPressed: addItem,
             child: Icon(Icons.add),
             tooltip: 'Add item',
           ),
           SizedBox(width: 16),
           FloatingActionButton.extended(
-            label: Text('ListView.builder'),
-            icon: Icon(Icons.arrow_forward),
+            heroTag: 'next_builder',
+            label: Text('ListView.custom'),
+            icon: Icon(Icons.settings),
             onPressed: navigateNext,
-            heroTag: 'nav3',
           ),
         ],
       ),
