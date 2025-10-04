@@ -30,11 +30,22 @@ class FirstFragment extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('This is Fragment 1'),
+            const Text(
+              'This is Fragment 1',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             ElevatedButton(
               onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const SecondFragment())),
+                context,
+                MaterialPageRoute(builder: (_) => const SecondFragment()),
+              ),
               child: const Text('Go to Fragment 2'),
             ),
           ],
