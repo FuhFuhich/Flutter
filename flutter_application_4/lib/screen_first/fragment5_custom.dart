@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'fragment1.dart';
+import 'fragment6_column.dart';
 
 class Fragment5Custom extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _Fragment5CustomState extends State<Fragment5Custom> {
   void navigateNext() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Fragment1()),
+      MaterialPageRoute(builder: (context) => Fragment6Column()),
     );
   }
 
@@ -60,7 +60,7 @@ class _Fragment5CustomState extends State<Fragment5Custom> {
           SizedBox(width: 16),
           FloatingActionButton.extended(
             heroTag: 'next_custom',
-            label: Text('SingleChildScrollView'),
+            label: Text('Widget Column'),
             icon: Icon(Icons.swap_vert),
             onPressed: navigateNext,
           ),

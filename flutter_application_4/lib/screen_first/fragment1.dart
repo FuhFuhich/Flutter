@@ -31,7 +31,7 @@ class _Fragment1State extends State<Fragment1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('SingleChildScrollView + Column')),
+      appBar: AppBar(title: const Text('SingleChildScrollView + Column')),
       body: SingleChildScrollView(
         child: Column(
           children: items.asMap().entries.map((entry) {
@@ -41,7 +41,7 @@ class _Fragment1State extends State<Fragment1> {
               key: ValueKey(val),
               title: Text(val),
               trailing: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () => removeItem(idx),
               ),
             );
@@ -51,16 +51,16 @@ class _Fragment1State extends State<Fragment1> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
+          FloatingActionButton (
             heroTag: 'add1',
             onPressed: addItem,
             child: Icon(Icons.add),
             tooltip: 'Add item',
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           FloatingActionButton.extended(
-            label: Text('ListView.builder'),
-            icon: Icon(Icons.arrow_forward),
+            label: const Text('ListView'),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: navigateNext,
             heroTag: 'nav1',
           ),
