@@ -41,7 +41,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
                 backgroundColor: const Color(0xFF00E676),
                 child: ClipOval(
                   child: CachedNetworkImage(
-                    imageUrl: _imageUrls[_currentImageIndex],
+                    imageUrl: _imageUrls[_currentImageIndex], // Отображение по индексу
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
