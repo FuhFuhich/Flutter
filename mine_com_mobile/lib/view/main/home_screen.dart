@@ -28,12 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
       default:
         return;
     }
-    // Не открываем текущую страницу повторно
     if (_currentIndex == index) return;
     setState(() {
       _currentIndex = index;
     });
-    // Переход с помощью push
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => targetPage),
     );
@@ -45,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const ProfileFragment(),
       const ServerListWrapper(),
       const SettingsFragment(),
-    ];
+    ]; 
 
     return Scaffold(
       body: _pages[_currentIndex],
