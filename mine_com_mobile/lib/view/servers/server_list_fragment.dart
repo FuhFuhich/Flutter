@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import '../../model/server_model.dart';
+import 'screens.dart';
+
 
 class ServerListWrapper extends StatefulWidget {
   const ServerListWrapper({super.key});
 
+
   @override
   State<ServerListWrapper> createState() => _ServerListWrapperState();
 }
+
 
 class _ServerListWrapperState extends State<ServerListWrapper> {
   final List<ServerModel> _servers = [
     ServerModel(name: 'Minecraft Server 1', status: 'Онлайн', players: 12),
     ServerModel(name: 'Minecraft Server 2', status: 'Оффлайн', players: 0),
   ];
+
 
   void _addServer() {
     setState(() {
@@ -24,11 +29,13 @@ class _ServerListWrapperState extends State<ServerListWrapper> {
     });
   }
 
+
   void _removeServer() {
     setState(() {
       if (_servers.isNotEmpty) _servers.removeLast();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +98,20 @@ class _ServerListWrapperState extends State<ServerListWrapper> {
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Страничная навигация с горизонтальным свайпом
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HorizontalServerNavigation(),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF00E676),
+        child: const Icon(Icons.arrow_forward, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

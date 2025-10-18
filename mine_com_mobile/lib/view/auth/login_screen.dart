@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Заскринить
   void _goToRegisterWithNamedRoute() {
     Navigator.of(context).pushNamed('/register');
   }
