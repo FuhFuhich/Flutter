@@ -32,6 +32,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void _onLoginPressedWithNamedRoute() {
+    if (_formKey.currentState?.validate() ?? false) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+  }
+
+  // Заскринить
+  void _goToRegisterWithNamedRoute() {
+    Navigator.of(context).pushNamed('/register');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,14 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fillColor: Color(0xFF222222),
                             border: OutlineInputBorder(),
                             labelStyle: TextStyle(color: Color(0xFFBBBBBB)),
-                          ),/*
-                          validator: (v) {
-                            if (v == null || v.isEmpty) return 'Введите email';
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
-                              return 'Некорректный email';
-                            }
-                            return null;
-                          },*/
+                          ),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -105,8 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: const OutlineInputBorder(),
                             labelStyle: const TextStyle(color: Color(0xFFBBBBBB)),
                           ),
-                          //validator: (v) =>
-                          //    v == null || v.length < 6 ? 'Минимум 6 символов' : null,
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -123,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: _onLoginPressed,
+                          onPressed: _onLoginPressedWithNamedRoute,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00E676),
                             minimumSize: const Size(double.infinity, 48),

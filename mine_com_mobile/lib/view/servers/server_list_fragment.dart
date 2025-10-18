@@ -30,6 +30,25 @@ class _ServerListWrapperState extends State<ServerListWrapper> {
     });
   }
 
+  // Заскринить push - переход на новый экран
+  void _examplePushMethod() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const Placeholder()),
+    );
+  }
+
+  // Заскринить pop - возврат на предыдущий экран
+  void _examplePopMethod() {
+    Navigator.of(context).pop();
+  }
+
+  // Заскринить pushReplacement - замена текущего экрана
+  void _examplePushReplacementMethod() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const Placeholder()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

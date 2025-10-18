@@ -33,6 +33,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  void _onRegisterPressedWithNamedRoute() {
+    if (!_acceptTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Примите условия использования')),
+      );
+      return;
+    }
+    if (_formKey.currentState?.validate() ?? false) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +85,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelStyle: TextStyle(color: Color(0xFFBBBBBB)),
                           ),
                           style: const TextStyle(color: Colors.white),
-                          //validator: (v) =>
-                             // v == null || v.isEmpty ? 'Введите имя' : null,
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -90,14 +100,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelStyle: TextStyle(color: Color(0xFFBBBBBB)),
                           ),
                           style: const TextStyle(color: Colors.white),
-                          /*validator: (v) {
-                            if (v == null || v.isEmpty) return 'Введите email';
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
-                              return 'Некорректный email';
-                            }
-                            return null;
-                          },
-                          */
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -123,8 +125,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelStyle: const TextStyle(color: Color(0xFFBBBBBB)),
                           ),
                           style: const TextStyle(color: Colors.white),
-                          //validator: (v) =>
-                          //    v != null && v.length >= 6 ? null : 'Минимум 6 символов',
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -174,7 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: _onRegisterPressed,
+                          onPressed: _onRegisterPressedWithNamedRoute,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00E676),
                             minimumSize: const Size(double.infinity, 48),

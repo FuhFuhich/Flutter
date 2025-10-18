@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../model/user_model.dart';
 
 class ProfileFragment extends StatefulWidget {
   const ProfileFragment({super.key});
@@ -41,7 +40,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
                 backgroundColor: const Color(0xFF00E676),
                 child: ClipOval(
                   child: CachedNetworkImage(
-                    imageUrl: _imageUrls[_currentImageIndex], // Отображение по индексу
+                    imageUrl: _imageUrls[_currentImageIndex],
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -58,7 +57,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Имя пользователя', // здесь будет загрузка имени
+                'Имя пользователя',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -67,7 +66,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
               ),
               const SizedBox(height: 8),
               const Text(
-                'email@example.com', // здесь будет вывод почты
+                'email@example.com',
                 style: TextStyle(color: Color(0xFFBBBBBB)),
               ),
               const SizedBox(height: 32),
@@ -91,7 +90,6 @@ class _ProfileFragmentState extends State<ProfileFragment> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Кнопка выхода с логикой переключения изображения
               Container(
                 width: double.infinity,
                 height: 48,
@@ -102,7 +100,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ElevatedButton(
-                  onPressed: _changeImage, // При нажатии меняется картинка
+                  onPressed: _changeImage,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,

@@ -12,14 +12,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
-  final List<Widget> _pages = const [
-    ProfileFragment(),
-    ServerListWrapper(),
-    SettingsFragment(),
-  ];
+
+  void _onTabSelected(int index) {
+    Widget targetPage;
+    switch (index) {
+      case 0:
+        targetPage = const ProfileFragment();
+        break;
+      case 1:
+        targetPage = const ServerListWrapper();
+        break;
+      case 2:
+        targetPage = const SettingsFragment();
+        break;
+      default:
+        return;
+    }
+    // Не открываем текущую страницу повторно
+    if (_currentIndex == index) return;
+    setState(() {
+      _currentIndex = index;
+    });
+    // Переход с помощью push
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => targetPage),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final _pages = [
+      const ProfileFragment(),
+      const ServerListWrapper(),
+      const SettingsFragment(),
+    ];
+
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -27,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: const Color(0xFF00E676),
         unselectedItemColor: const Color(0xFFBBBBBB),
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: _onTabSelected,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
