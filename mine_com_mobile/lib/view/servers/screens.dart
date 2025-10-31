@@ -56,7 +56,9 @@ class _HorizontalServerNavigationState extends State<HorizontalServerNavigation>
             )
           : FloatingActionButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/vertical/1');
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VerticalNavigationDelegate(start: 1),
+                ));
               },
               backgroundColor: const Color(0xFFFF9800),
               child: const Icon(Icons.grid_view, color: Colors.white),
@@ -87,7 +89,11 @@ class ServerScreen extends StatelessWidget {
 
 class VerticalServerScreen extends StatelessWidget {
   final int serverNumber;
-  const VerticalServerScreen({super.key, required this.serverNumber});
+  final VoidCallback? onNext;
+  final VoidCallback? onFinish;
+
+  const VerticalServerScreen(
+      {super.key, required this.serverNumber, this.onNext, this.onFinish});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +119,7 @@ class VerticalServerScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Вертикальная маршрутизированная навигация',
+              'Делегат навигации',
               style: TextStyle(
                 color: Color(0xFFBBBBBB),
                 fontSize: 14,
@@ -124,20 +130,12 @@ class VerticalServerScreen extends StatelessWidget {
       ),
       floatingActionButton: serverNumber < 5
           ? FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/vertical/${serverNumber + 1}');
-              },
+              onPressed: onNext,
               backgroundColor: const Color(0xFF00E676),
               child: const Icon(Icons.arrow_downward, color: Colors.white),
             )
           : FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/home',
-                  (route) => false,
-                );
-              },
+              onPressed: onFinish,
               backgroundColor: const Color(0xFF2196F3),
               child: const Icon(Icons.home, color: Colors.white),
             ),
@@ -146,30 +144,34 @@ class VerticalServerScreen extends StatelessWidget {
   }
 }
 
-Route<dynamic>? generateRoutes(RouteSettings settings) {
-  switch (settings.name) {
-    case '/vertical/1':
-      return MaterialPageRoute(
-        builder: (_) => const VerticalServerScreen(serverNumber: 1),
-      );
-    case '/vertical/2':
-      return MaterialPageRoute(
-        builder: (_) => const VerticalServerScreen(serverNumber: 2),
-      );
-    case '/vertical/3':
-      return MaterialPageRoute(
-        builder: (_) => const VerticalServerScreen(serverNumber: 3),
-      );
-    case '/vertical/4':
-      return MaterialPageRoute(
-        builder: (_) => const VerticalServerScreen(serverNumber: 4),
-      );
-    case '/vertical/5':
-      return MaterialPageRoute(
-        builder: (_) => const VerticalServerScreen(serverNumber: 5),
-      );
-    default:
-      return null;
+class VerticalNavigationDelegate extends StatefulWidget {
+  final int start;
+  const VerticalNavigationDelegate({super.key, required this.start});
+
+  @override
+  State<VerticalNavigationDelegate> createState() =>
+      _VerticalNavigationDelegateState();
+}
+
+class _VerticalNavigationDelegateState extends State<VerticalNavigationDelegate> {
+  int page = 1;
+
+  void nextPage() {
+    setState(() {
+      page += 1;
+    });
+  }
+
+  void finish() {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VerticalServerScreen(
+      serverNumber: page,
+      onNext: page < 5 ? nextPage : null,
+      onFinish: page == 5 ? finish : null,
+    );
   }
 }
- 
