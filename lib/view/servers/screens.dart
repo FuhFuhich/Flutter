@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 
-class RouteHorizontalServerNavigation extends StatelessWidget {
-  final int serverNumber;
-  const RouteHorizontalServerNavigation({super.key, this.serverNumber = 1});
+class HorizontalServerNavigation extends StatefulWidget {
+  const HorizontalServerNavigation({super.key});
+
+  @override
+  State<HorizontalServerNavigation> createState() =>
+      _HorizontalServerNavigationState();
+}
+
+class _HorizontalServerNavigationState extends State<HorizontalServerNavigation> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,38 +24,44 @@ class RouteHorizontalServerNavigation extends StatelessWidget {
       backgroundColor: const Color(0xFF141414),
       appBar: AppBar(
         backgroundColor: const Color(0xFF222222),
-        title: Text('Сервер $serverNumber'),
+        title: Text('Сервер ${_currentPage + 1}'),
         foregroundColor: Colors.white,
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Text(
-          'Сервер$serverNumber',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPage = index;
+          });
+        },
+        children: const [
+          ServerScreen(serverNumber: 1),
+          ServerScreen(serverNumber: 2),
+          ServerScreen(serverNumber: 3),
+          ServerScreen(serverNumber: 4),
+          ServerScreen(serverNumber: 5),
+        ],
       ),
-      floatingActionButton: serverNumber < 5
+      floatingActionButton: _currentPage < 4
           ? FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RouteHorizontalServerNavigation(
-                    serverNumber: serverNumber + 1,
-                  ),
-                ));
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
               },
               backgroundColor: const Color(0xFF00E676),
               child: const Icon(Icons.arrow_forward, color: Colors.white),
             )
           : FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VerticalNavigationDelegate(start: 1),
+                ));
               },
-              backgroundColor: const Color(0xFF2196F3),
-              child: const Icon(Icons.home, color: Colors.white),
+              backgroundColor: const Color(0xFFFF9800),
+              child: const Icon(Icons.grid_view, color: Colors.white),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
