@@ -1,22 +1,8 @@
 import 'package:flutter/material.dart';
 
-class HorizontalServerNavigation extends StatefulWidget {
-  const HorizontalServerNavigation({super.key});
-
-  @override
-  State<HorizontalServerNavigation> createState() =>
-      _HorizontalServerNavigationState();
-}
-
-class _HorizontalServerNavigationState extends State<HorizontalServerNavigation> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+class RouteVerticalServerNavigation extends StatelessWidget {
+  final int serverNumber;
+  const RouteVerticalServerNavigation({super.key, this.serverNumber = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -24,44 +10,51 @@ class _HorizontalServerNavigationState extends State<HorizontalServerNavigation>
       backgroundColor: const Color(0xFF141414),
       appBar: AppBar(
         backgroundColor: const Color(0xFF222222),
-        title: Text('Сервер ${_currentPage + 1}'),
+        title: Text('Сервер $serverNumber'),
         foregroundColor: Colors.white,
         automaticallyImplyLeading: false,
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-        children: const [
-          ServerScreen(serverNumber: 1),
-          ServerScreen(serverNumber: 2),
-          ServerScreen(serverNumber: 3),
-          ServerScreen(serverNumber: 4),
-          ServerScreen(serverNumber: 5),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Сервер$serverNumber',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Маршрутная навигация',
+              style: TextStyle(
+                color: Color(0xFFBBBBBB),
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
-      floatingActionButton: _currentPage < 4
+      floatingActionButton: serverNumber < 5
           ? FloatingActionButton(
               onPressed: () {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => RouteVerticalServerNavigation(
+                    serverNumber: serverNumber + 1,
+                  ),
+                ));
               },
               backgroundColor: const Color(0xFF00E676),
-              child: const Icon(Icons.arrow_forward, color: Colors.white),
+              child: const Icon(Icons.arrow_downward, color: Colors.white),
             )
           : FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VerticalNavigationDelegate(start: 1),
-                ));
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              backgroundColor: const Color(0xFFFF9800),
-              child: const Icon(Icons.grid_view, color: Colors.white),
+              backgroundColor: const Color(0xFF2196F3),
+              child: const Icon(Icons.home, color: Colors.white),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
