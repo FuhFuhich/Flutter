@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class PageHorizontalServerNavigation extends StatefulWidget {
-  const PageHorizontalServerNavigation({super.key});
+class PageVerticalServerNavigation extends StatefulWidget {
+  const PageVerticalServerNavigation({super.key});
 
   @override
-  State<PageHorizontalServerNavigation> createState() =>
-      _PageHorizontalServerNavigationState();
+  State<PageVerticalServerNavigation> createState() =>
+      _PageVerticalServerNavigationState();
 }
 
-class _PageHorizontalServerNavigationState
-    extends State<PageHorizontalServerNavigation> {
+class _PageVerticalServerNavigationState
+    extends State<PageVerticalServerNavigation> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -31,6 +31,7 @@ class _PageHorizontalServerNavigationState
       ),
       body: PageView(
         controller: _pageController,
+        scrollDirection: Axis.vertical,
         onPageChanged: (index) {
           setState(() {
             _currentPage = index;
@@ -142,4 +143,4 @@ class _VerticalNavigationDelegateState extends State<VerticalNavigationDelegate>
       onFinish: page == 5 ? finish : null,
     );
   }
-} 
+}

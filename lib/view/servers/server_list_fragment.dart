@@ -97,7 +97,7 @@ class _ServerListWrapperState extends State<ServerListWrapper> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PageHorizontalServerNavigation(),
+              builder: (context) => const PageVerticalServerNavigation(),
             ),
           );
         },
