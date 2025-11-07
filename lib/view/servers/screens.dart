@@ -142,4 +142,4 @@ class _VerticalNavigationDelegateState extends State<VerticalNavigationDelegate>
       onFinish: page == 5 ? finish : null,
     );
   }
-}
+} 
