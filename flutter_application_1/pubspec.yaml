@@ -27,6 +27,7 @@ dev_dependencies:
   web_socket_channel: ^3.0.3
   http: ^1.2.0
   cached_network_image: ^3.3.0
+  flutter_bloc: ^8.1.2
 
 
 flutter:
