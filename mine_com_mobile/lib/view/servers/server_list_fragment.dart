@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../model/server_model.dart';
-import 'screens.dart';
 
 
 class ServerListWrapper extends StatefulWidget {
@@ -98,20 +97,6 @@ class _ServerListWrapperState extends State<ServerListWrapper> {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Страничная навигация с горизонтальным свайпом
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HorizontalServerNavigation(),
-            ),
-          );
-        },
-        backgroundColor: const Color(0xFF00E676),
-        child: const Icon(Icons.arrow_forward, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
