@@ -14,7 +14,7 @@ class UserDataProvider extends InheritedWidget {
     required this.imageUrls,
     required this.currentImageIndex,
     required this.onImageChange,
-    required super.child,
+    required super.child, 
   });
 
   static UserDataProvider of(BuildContext context) {
