@@ -66,7 +66,7 @@ class ProfileFragment extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StorageFragment()),
+                      MaterialPageRoute(builder: (context) => const NetworkFragment()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

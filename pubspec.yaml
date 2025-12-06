@@ -14,6 +14,11 @@ dependencies:
   fl_chart: ^0.68.0
   flutter_riverpod: ^2.4.0
   shared_preferences: ^2.2.2
+  drift: ^2.29.0           
+  sqlite3_flutter_libs: ^0.5.31  
+  path: ^1.9.0              
+  path_provider: ^2.1.5  
+  dio: ^5.7.0   
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +30,8 @@ dev_dependencies:
   postgres: ^3.5.8
   web_socket_channel: ^3.0.3
   http: ^1.2.0
+  drift_dev: ^2.29.0        
+  build_runner: ^2.10.4
 
 flutter:
   uses-material-design: true
