@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
+import 'StorageFragment.dart';
 
 class ProfileFragment extends StatelessWidget {
   const ProfileFragment({super.key});
@@ -62,7 +63,12 @@ class ProfileFragment extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const StorageFragment()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
