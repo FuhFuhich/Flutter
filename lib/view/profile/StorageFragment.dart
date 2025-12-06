@@ -1,6 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+// ===== DTO =====
+
+class UserDto {
+  final int id;
+  final String name;
+  final String username;
+  final String email;
+
+  UserDto({
+    required this.id,
+    required this.name,
+    required this.username,
+    required this.email,
+  });
+
+  factory UserDto.fromJson(Map<String, dynamic> json) {
+    return UserDto(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      username: json['username'] as String,
+      email: json['email'] as String,
+    );
+  }
+}
+
+// ===== Виджет =====
+
 class NetworkFragment extends StatefulWidget {
   const NetworkFragment({super.key});
 
@@ -9,12 +36,17 @@ class NetworkFragment extends StatefulWidget {
 }
 
 class _NetworkFragmentState extends State<NetworkFragment> {
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'https://jsonplaceholder.typicode.com',
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 5),
-    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-  ));
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://jsonplaceholder.typicode.com',
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 5),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    ),
+  );
 
   String usersData = 'Загрузить пользователей';
   String postsData = 'Загрузить посты';
@@ -25,8 +57,11 @@ class _NetworkFragmentState extends State<NetworkFragment> {
   Future<void> _loadUsers() async {
     try {
       final response = await _dio.get('/users');
+      final List list = response.data as List;
+      final users = list.map((e) => UserDto.fromJson(e)).toList();
       setState(() {
-        usersData = 'Пользователей: ${response.data.length}';
+        usersData =
+            'Пользователей: ${users.length}\nПервый: ${users.first.name} (${users.first.email})';
       });
     } catch (e) {
       setState(() {
@@ -37,9 +72,9 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadPosts() async {
     try {
-      final response = await _dio.get('https://jsonplaceholder.typicode.com/posts');
+      final response = await _dio.get('/posts');
       setState(() {
-        postsData = 'Постов: ${response.data.length}';
+        postsData = 'Постов: ${(response.data as List).length}';
       });
     } catch (e) {
       setState(() {
@@ -52,7 +87,7 @@ class _NetworkFragmentState extends State<NetworkFragment> {
     try {
       final response = await _dio.get('/albums');
       setState(() {
-        albumsData = 'Альбомов: ${response.data.length}';
+        albumsData = 'Альбомов: ${(response.data as List).length}';
       });
     } catch (e) {
       setState(() {
@@ -65,7 +100,7 @@ class _NetworkFragmentState extends State<NetworkFragment> {
     try {
       final response = await _dio.get('/todos');
       setState(() {
-        todosData = 'Задач: ${response.data.length}';
+        todosData = 'Задач: ${(response.data as List).length}';
       });
     } catch (e) {
       setState(() {
@@ -76,9 +111,10 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadPhotos() async {
     try {
-      final response = await _dio.get('https://jsonplaceholder.typicode.com/photos?_limit=5');
+      final response =
+          await _dio.get('/photos', queryParameters: {'_limit': 5});
       setState(() {
-        photosData = 'Фото загружено: ${response.data.length} шт.';
+        photosData = 'Фото загружено: ${(response.data as List).length} шт.';
       });
     } catch (e) {
       setState(() {
@@ -93,7 +129,10 @@ class _NetworkFragmentState extends State<NetworkFragment> {
       backgroundColor: const Color(0xFF141414),
       appBar: AppBar(
         backgroundColor: const Color(0xFF141414),
-        title: const Text('Сетевые запросы', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Сетевые запросы',
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
@@ -101,18 +140,37 @@ class _NetworkFragmentState extends State<NetworkFragment> {
           padding: const EdgeInsets.all(24),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildRequestCard('Пользователи (JSONPlaceholder)', usersData, _loadUsers),
+                _buildRequestCard(
+                  'Пользователи (JSONPlaceholder)',
+                  usersData,
+                  _loadUsers,
+                ),
                 const SizedBox(height: 16),
-                _buildRequestCard('Посты (JSONPlaceholder)', postsData, _loadPosts),
+                _buildRequestCard(
+                  'Посты (JSONPlaceholder)',
+                  postsData,
+                  _loadPosts,
+                ),
                 const SizedBox(height: 16),
-                _buildRequestCard('Альбомы (JSONPlaceholder)', albumsData, _loadAlbums),
+                _buildRequestCard(
+                  'Альбомы (JSONPlaceholder)',
+                  albumsData,
+                  _loadAlbums,
+                ),
                 const SizedBox(height: 16),
-                _buildRequestCard('Задачи (JSONPlaceholder)', todosData, _loadTodos),
+                _buildRequestCard(
+                  'Задачи (JSONPlaceholder)',
+                  todosData,
+                  _loadTodos,
+                ),
                 const SizedBox(height: 16),
-                _buildRequestCard('Фото (JSONPlaceholder)', photosData, _loadPhotos),
+                _buildRequestCard(
+                  'Фото (JSONPlaceholder)',
+                  photosData,
+                  _loadPhotos,
+                ),
               ],
             ),
           ),
@@ -121,7 +179,11 @@ class _NetworkFragmentState extends State<NetworkFragment> {
     );
   }
 
-  Widget _buildRequestCard(String title, String data, VoidCallback onLoad) {
+  Widget _buildRequestCard(
+    String title,
+    String data,
+    VoidCallback onLoad,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -134,7 +196,11 @@ class _NetworkFragmentState extends State<NetworkFragment> {
         children: [
           Text(
             title,
-            style: const TextStyle(color: Color(0xFF00E676), fontWeight: FontWeight.bold, fontSize: 16),
+            style: const TextStyle(
+              color: Color(0xFF00E676),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -152,7 +218,11 @@ class _NetworkFragmentState extends State<NetworkFragment> {
               ),
               child: const Text(
                 'Выполнить запрос',
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
