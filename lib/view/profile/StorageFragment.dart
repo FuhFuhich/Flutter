@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:retrofit/retrofit.dart';
+
+part 'network_fragment.g.dart';
 
 // ===== DTO =====
 
+@JsonSerializable()
 class UserDto {
   final int id;
   final String name;
@@ -16,14 +21,36 @@ class UserDto {
     required this.email,
   });
 
-  factory UserDto.fromJson(Map<String, dynamic> json) {
-    return UserDto(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      username: json['username'] as String,
-      email: json['email'] as String,
-    );
-  }
+  factory UserDto.fromJson(Map<String, dynamic> json) =>
+      _$UserDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserDtoToJson(this);
+}
+
+// ===== Retrofit API =====
+
+@RestApi(
+  baseUrl: 'https://jsonplaceholder.typicode.com',
+)
+abstract class JsonPlaceholderApi {
+  factory JsonPlaceholderApi(Dio dio, {String? baseUrl}) = _JsonPlaceholderApi;
+
+  @GET('/users')
+  Future<List<UserDto>> getUsers();
+
+  @GET('/posts')
+  Future<List<dynamic>> getPosts();
+
+  @GET('/albums')
+  Future<List<dynamic>> getAlbums();
+
+  @GET('/todos')
+  Future<List<dynamic>> getTodos();
+
+  @GET('/photos')
+  Future<List<dynamic>> getPhotos(
+    @Query('_limit') int limit,
+  );
 }
 
 // ===== Виджет =====
@@ -36,17 +63,8 @@ class NetworkFragment extends StatefulWidget {
 }
 
 class _NetworkFragmentState extends State<NetworkFragment> {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://jsonplaceholder.typicode.com',
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 5),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    ),
-  );
+  late final Dio _dio;
+  late final JsonPlaceholderApi _api;
 
   String usersData = 'Загрузить пользователей';
   String postsData = 'Загрузить посты';
@@ -54,11 +72,26 @@ class _NetworkFragmentState extends State<NetworkFragment> {
   String todosData = 'Загрузить задачи';
   String photosData = 'Загрузить фото';
 
+  @override
+  void initState() {
+    super.initState();
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://jsonplaceholder.typicode.com',
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+    _api = JsonPlaceholderApi(_dio);
+  }
+
   Future<void> _loadUsers() async {
     try {
-      final response = await _dio.get('/users');
-      final List list = response.data as List;
-      final users = list.map((e) => UserDto.fromJson(e)).toList();
+      final users = await _api.getUsers();
       setState(() {
         usersData =
             'Пользователей: ${users.length}\nПервый: ${users.first.name} (${users.first.email})';
@@ -72,9 +105,9 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadPosts() async {
     try {
-      final response = await _dio.get('/posts');
+      final posts = await _api.getPosts();
       setState(() {
-        postsData = 'Постов: ${(response.data as List).length}';
+        postsData = 'Постов: ${posts.length}';
       });
     } catch (e) {
       setState(() {
@@ -85,9 +118,9 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadAlbums() async {
     try {
-      final response = await _dio.get('/albums');
+      final albums = await _api.getAlbums();
       setState(() {
-        albumsData = 'Альбомов: ${(response.data as List).length}';
+        albumsData = 'Альбомов: ${albums.length}';
       });
     } catch (e) {
       setState(() {
@@ -98,9 +131,9 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadTodos() async {
     try {
-      final response = await _dio.get('/todos');
+      final todos = await _api.getTodos();
       setState(() {
-        todosData = 'Задач: ${(response.data as List).length}';
+        todosData = 'Задач: ${todos.length}';
       });
     } catch (e) {
       setState(() {
@@ -111,10 +144,9 @@ class _NetworkFragmentState extends State<NetworkFragment> {
 
   Future<void> _loadPhotos() async {
     try {
-      final response =
-          await _dio.get('/photos', queryParameters: {'_limit': 5});
+      final photos = await _api.getPhotos(5);
       setState(() {
-        photosData = 'Фото загружено: ${(response.data as List).length} шт.';
+        photosData = 'Фото загружено: ${photos.length} шт.';
       });
     } catch (e) {
       setState(() {
