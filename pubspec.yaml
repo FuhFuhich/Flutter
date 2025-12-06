@@ -1,22 +1,18 @@
-name: flutter_application_1
+name: mine_com_mobile
 description: "A new Flutter project."
 publish_to: 'none'
 version: 1.0.0+1
 
-
 environment:
   sdk: ^3.9.2
-
 
 dependencies:
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  get_it: ^7.6.0
-  mobx: ^2.3.0
-  flutter_mobx: ^2.0.6
-  
+  fl_chart: ^0.68.0
+  flutter_riverpod: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -28,12 +24,6 @@ dev_dependencies:
   postgres: ^3.5.8
   web_socket_channel: ^3.0.3
   http: ^1.2.0
-  cached_network_image: ^3.3.0
-  flutter_bloc: ^8.1.2
-  flutter_riverpod: ^2.3.0
-  mobx_codegen: ^2.3.0
-  build_runner: ^2.4.8
-
 
 flutter:
   uses-material-design: true
